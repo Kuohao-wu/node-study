@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <p id="text"></p>
+  <script>
+    const text = document.querySelector('#text')
+
+    var date = new Date()
+    date.setMinutes(date.getMinutes() + 1)
+
+    // cookie全部参数,cookie每次只能添加一个key和value,如果要添加多个，则需要重新写入
+    
+    // document.cookie = 'key=value; [expires=date(失效时间); path=string(限制访问路径); domain=string(限制访问域名); secure=boolean(限制只能https协议访问), httpOnly=boolean(限制只能http协议下才能访问cookie)]'
+    // 
+    // 设置过期时间为1分钟后，一过期，浏览器马上清除该cookie
+    // document.cookie = `user=kuohao; expires=${date.toUTCString()}`  // cookie是以key=value的形式保存的
+    
+    // 设置max-age来做过期时间,以秒为单位，max-age默认为-1，表示关闭浏览器后马上删除，为0则表示删除当前的cookie
+    // document.cookie = `user=kuohao;max-age=60;`
+    
+    // expires的时间格式是GMT格式，也就是世界时格式，使用date.toUTCString()或者date.toGMTString()可以将本地时间
+    // 转换成世界时
+
+    // 删除cookie
+    // document.cookie = `user=kuohao; expires=${new Date(0)}`
+    // 解析cookie
+    function parseCookie(cookie) {
+      var cookies = {}
+
+      if(!cookie) {
+        return cookies
+      }
+
+      var list = cookie.split(';')
+      
+      list.forEach(item => {
+        var pairs = item.split('=')
+        cookies[pairs[0].trim()] = pairs[1]
+      })
+      return cookies
+    }
+    var cookies = parseCookie(document.cookie)
+    text.innerText = `${cookies.user}`
+  </script>
+</body>
+</html>
